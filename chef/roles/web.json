@@ -1,0 +1,41 @@
+{
+  "name": "web",
+  "default_attributes": {},
+  "override_attributes": {
+    /*"mysql": {
+      "server_root_password": "reverse",
+      "server_repl_password": "reverse",
+      "server_debian_password": "reverse"
+    },*/
+    "php": {
+      "install_method": "source",
+      "version": "5.4.27"
+    },
+    "php-fpm": {
+      "pools": [
+        {
+          "name": "www",
+          "php_options": {
+            "php_admin_flag[log_errors]": "on",
+            "php_admin_value[memory_limit]": "128M"
+          },
+          "listen": "/var/run/php-fpm-www.sock"
+        }
+      ]
+    },
+    "nfs": {
+      "server": ["nfs-kernel-server"]
+    }
+  },
+  "json_class": "Chef::Role",
+  "description": "Devserver",
+  "chef_type": "role",
+  "run_list": [
+    "recipe[apt]",
+    "recipe[php]",
+    "recipe[php-fpm]",
+    "recipe[mysql::server]",
+    "recipe[nginx]",
+    "recipe[nfs::server]"
+  ]
+}
